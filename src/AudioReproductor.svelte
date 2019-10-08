@@ -8,17 +8,21 @@
 
     let audioHTML
     
+    let cargando = true;
+
     let actualizacion;
     let tiempo;
-    
-    export let informacion;
+    let progreso 
+
 
     $: tocando = !! actualizacion
     $: tiempo = !! audioHTML ? formatearDuracion(audioHTML.currentTime) : 0
-    $: duracion = !! audioHTML ? formatearDuracion(audioHTML.currentTime / audioHTML.duration) : 0
-    $: progreso = (tiempo / duracion)*100;
+    $: duracion = !! audioHTML ? formatearDuracion(audioHTML.duration) : 0
+    $: progreso = !! audioHTML ? calcularProgreso(audioHTML.currentTime,audioHTML.duration) : 0
+    
 
 
+    const calcularProgreso = (tiempo,duracion) => (tiempo / duracion)*100
 
     const actualizar = ()=>{
         // reasignar para detonar asignacion reactiva con '$'
@@ -45,6 +49,20 @@
     }
 
     
+
+    onMount(() => {
+    
+        
+        audioHTML.addEventListener('canplay',()=>{
+          actualizar()
+          setTimeout(()=>{
+            // suavizar cargado
+            cargando = false      
+          }, 500)
+        });
+        
+    
+    })
 
     onDestroy(() => {
     
@@ -83,7 +101,8 @@
             progreso,
             audio,
             parar,
-            tocar
+            tocar,
+            cargando
         }
     }
 />

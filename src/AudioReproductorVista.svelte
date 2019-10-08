@@ -1,43 +1,70 @@
 <script>
-    export let tocando;
-    export let parar;
-    export let tocar;
-    export let tiempo;
-    export let duracion;
-    export let progreso;
-    export let audio;
+
+import { fade } from 'svelte/transition';
+
+export let tocando;
+export let parar;
+export let tocar;
+export let tiempo;
+export let duracion;
+export let progreso;
+export let audio;
+export let cargando;
+
 </script>
 
 <style>
-    .AudioTarjeta {
+
+    .AudioReproductor {
         border: 1px solid #000;
+        position: relative;
+        min-height: 6rem;
     }
 
     input[type="range"] {
         width: 100%;
     }
+
+    .AudioReproductor > .Cargando {
+        width: 100%;
+        height: 6rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
 </style>
 
-<article class="AudioTarjeta">
+<article class="AudioReproductor">
 
-    <header>
-    {#if tocando}
-        <button on:click={()=>parar()}>Parar</button>
+    {#if ! cargando }
+        <header transition:fade>
+            {#if tocando}
+                <button on:click={()=>parar()}>Parar</button>
+            {:else}
+                <button on:click={()=>tocar()}>Tocar</button>
+            {/if}
+
+            <div class="Tiempo">
+                <span class="Posicion">{tiempo}</span>
+                <span class="Duracion">{duracion}</span>
+                <input type="range" class="Progreso" value={progreso}/>
+            </div>
+        </header>
+        <section class="Informacion">
+            <span>
+                { audio.nombre }
+            </span>
+        </section>
     {:else}
-        <button on:click={()=>tocar()}>Tocar</button>
+        <div class="Cargando" transition:fade>
+            Cargando...
+        </div>
     {/if}
 
-    <div class="Tiempo">
-        <span class="Posicion">{tiempo}</span>
-        <span class="Duracion">{duracion}</span>
-        <input type="range" class="Progreso" value={progreso}/>
-    </div>
-    </header>
-
-    <section class="Informacion">
-        <span>
-            { audio.nombre }
-        </span>
-    </section>
     
 </article>
