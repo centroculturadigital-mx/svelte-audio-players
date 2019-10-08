@@ -2,11 +2,17 @@
 	import { onMount, onDestroy } from 'svelte';
 
     // import audio from "./data/ambiente-interior.ogg"
-    const unArchivo = "/data/ambiente-interior.ogg"
+    const archivosAudio = [
+        "/data/ambiente-interior.ogg",
+        "/data/ambiente-interior.ogg",
+        "/data/ambiente-interior.ogg",
+        "/data/ambiente-interior.ogg",
+        "/data/ambiente-interior.ogg",
+        "/data/ambiente-interior.ogg",
+        "/data/ambiente-interior.ogg",
+    ]
 
-    let numAudios = 5
-
-    let archivosAudio = new Array(numAudios).fill({unArchivo})
+    let numAudios = archivosAudio.length
     
     let audios = []
 
@@ -24,7 +30,7 @@
         if(Number.isNaN(duracion)) {
             duracion = 0
         }
-        
+
         date.setSeconds(duracion); // specify value for SECONDS here
         return date.toISOString().substr(14, 5);
     }
