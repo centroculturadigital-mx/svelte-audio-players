@@ -1,5 +1,5 @@
 <script>
-	import AudioTarjeta from "./AudioTarjeta.svelte"
+	import Audios from "./Audios.svelte"
 </script>
 
-<AudioTarjeta/>
+<Audios/>
